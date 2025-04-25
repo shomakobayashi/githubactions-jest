@@ -11,7 +11,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    environment: production  # GitHub Environmentを指定
+    environment: dev  # GitHub Environmentを指定
 
     steps:
     - name: Checkout code
