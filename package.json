@@ -4,5 +4,9 @@
     "jest": "^29.7.0",
     "ts-jest": "^29.3.2",
     "typescript": "^5.8.3"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "jest --json --outputFile=test-results.json"
   }
 }
