@@ -28,61 +28,20 @@ jobs:
       run: npm test
       
     - name: Slack Notification
-      uses: 8398a7/action-slack@v3
-      with:
-        status: ${{ job.status }}
-        fields: repo,commit,message,author
-        custom_payload: |
-          {
-            "attachments": [
-              {
-                "color": "${{ job.status == 'success' && 'good' || 'danger' }}",
-                "blocks": [
-                  {
-                    "type": "section",
-                    "text": {
-                      "type": "mrkdwn",
-                      "text": "${{ job.status == 'success' && ':white_check_mark:' || ':x:' }} テスト結果：${{ job.status == 'success' && '成功' || '失敗' }}"
-                    }
-                  },
-                  {
-                    "type": "divider"
-                  },
-                  {
-                    "type": "section",
-                    "fields": [
-                      {
-                        "type": "mrkdwn",
-                        "text": "*リポジトリ:*\n${{ github.repository }}"
-                      },
-                      {
-                        "type": "mrkdwn",
-                        "text": "*ブランチ:*\n${{ github.ref_name }}"
-                      }
-                    ]
-                  },
-                  {
-                    "type": "section",
-                    "fields": [
-                      {
-                        "type": "mrkdwn",
-                        "text": "*実行者:*\n${{ github.actor }}"
-                      }
-                    ]
-                  }
-                ],
-                "actions": [
-                  {
-                    "type": "button",
-                    "text": {
-                      "type": "plain_text",
-                      "text": "ワークフロー詳細"
-                    },
-                    "url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-                  }
-                ]
-              }
-            ]
-          }
+      if: always()
+      uses: rtCamp/action-slack-notify@v2.0.2
       env:
-        SLACK_WEBHOOK_URL: ${{ vars.SLACK_WEBHOOK_URL }}
+        SLACK_WEBHOOK: ${{ vars.SLACK_WEBHOOK_URL }}
+        SLACK_COLOR: ${{ job.status == 'success' && 'good' || 'danger' }}
+        SLACK_ICON: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
+        SLACK_USERNAME: GitHub Actions Notifier
+        SLACK_TITLE: ""
+        SLACK_MESSAGE: |
+          ${{ job.status == 'success' && ':white_check_mark:' || ':x:' }} テスト結果：${{ job.status == 'success' && '成功' || '失敗' }}
+          
+          *リポジトリ:* ${{ github.repository }}
+          *ブランチ:* ${{ github.ref_name }}
+          *実行者:* ${{ github.actor }}
+        SLACK_FOOTER: ""
+        SLACK_LINK_NAMES: true
+        MSG_MINIMAL: true
