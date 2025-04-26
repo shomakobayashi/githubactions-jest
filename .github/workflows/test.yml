@@ -44,11 +44,7 @@ jobs:
             - type: "section"
               fields:
                 - type: "mrkdwn"
-                  text: "*リポジトリ:*\n${{ github.repository }}"
-                - type: "mrkdwn"
-                  text: "*ブランチ:*\n${{ github.ref_name }}"
-                - type: "mrkdwn"
-                  text: "*実行者:*\n${{ github.actor }}"
+                  text: "*リポジトリ:*\n${{ github.repository }}"   *ブランチ:*\n${{ github.ref_name }}   *実行者:*\n${{ github.actor }}"
             - type: "actions"
               elements:
                 - type: "button"
