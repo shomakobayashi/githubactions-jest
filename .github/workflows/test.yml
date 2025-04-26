@@ -47,14 +47,12 @@ jobs:
                   text: "*リポジトリ:*\n${{ github.repository }}"
                 - type: "mrkdwn"
                   text: "*ブランチ:*\n${{ github.ref_name }}"
-            - type: "section"
-              text:
-                type: "mrkdwn"
-                text: "*実行者:* ${{ github.actor }}"
+                - type: "mrkdwn"
+                  text: "*実行者:*\n${{ github.actor }}"
             - type: "actions"
               elements:
                 - type: "button"
                   text:
                     type: "plain_text"
-                    text: "詳細を見る"
+                    text: "ワークフロー詳細"
                   url: "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
