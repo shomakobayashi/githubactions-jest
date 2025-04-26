@@ -34,57 +34,31 @@ jobs:
         webhook: ${{ vars.SLACK_WEBHOOK_URL }}
         webhook-type: incoming-webhook
         payload: |
-          {
-            "text": "テスト ${{ job.status == 'success' && '成功' || '失敗' }}",
-            "blocks": [
-              {
-                "type": "section",
-                "text": {
-                  "type": "mrkdwn",
-                  "text": "*${{ job.status == 'success' && ':white_check_mark:' || ':x:' }} テスト結果：${{ job.status == 'success' && '成功' || '失敗' }}*"
-                }
-              },
-              {
-                "type": "divider"
-              },
-              {
-                "type": "section",
-                "fields": [
-                  {
-                    "type": "mrkdwn",
-                    "text": "*リポジトリ:*\n${{ github.repository }}"
-                  },
-                  {
-                    "type": "mrkdwn",
-                    "text": "*ブランチ:*\n${{ github.ref_name }}"
-                  }
-                ]
-              },
-              {
-                "type": "section",
-                "fields": [
-                  {
-                    "type": "mrkdwn",
-                    "text": "*実行者:*\n${{ github.actor }}"
-                  },
-                  {
-                    "type": "mrkdwn",
-                    "text": "*ステータス:*\n${{ job.status }}"
-                  }
-                ]
-              },
-              {
-                "type": "actions",
-                "elements": [
-                  {
-                    "type": "button",
-                    "text": {
-                      "type": "plain_text",
-                      "text": "ワークフロー詳細を見る"
-                    },
-                    "url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-                  }
-                ]
-              }
-            ]
-          }
+          text: "テスト ${{ job.status == 'success' && '成功' || '失敗' }}"
+          blocks:
+            - type: "section"
+              text:
+                type: "mrkdwn"
+                text: "*${{ job.status == 'success' && ':white_check_mark:' || ':x:' }} テスト結果：${{ job.status == 'success' && '成功' || '失敗' }}*"
+            - type: "section"
+              text:
+                type: "divider"
+            - type: "section"
+              fields:
+                - type: "mrkdwn"
+                  text: "*リポジトリ:*\n${{ github.repository }}"
+                - type: "mrkdwn"
+                  text: "*ブランチ:*\n${{ github.ref_name }}"
+            - type: "section"
+              fields:
+                - type: "mrkdwn"
+                  text: "*実行者:*\n${{ github.actor }}"
+                - type: "mrkdwn"
+                  text: "*ステータス:*\n${{ job.status }}"
+            - type: "actions"
+              elements:
+                - type: "button"
+                  text:
+                    type: "plain_text"
+                    text: "詳細を見る"
+                  url: "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
