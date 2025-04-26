@@ -32,12 +32,17 @@ jobs:
       uses: rtCamp/action-slack-notify@v2.0.2
       env:
         SLACK_WEBHOOK: ${{ vars.SLACK_WEBHOOK_URL }}
-        SLACK_TITLE: テスト${{ job.status == 'success' && '成功' || '失敗' }}
         SLACK_COLOR: ${{ job.status == 'success' && 'good' || 'danger' }}
+        SLACK_ICON: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
+        SLACK_USERNAME: GitHub Actions Notifier
+        SLACK_TITLE: ""
         SLACK_MESSAGE: |
           ${{ job.status == 'success' && ':white_check_mark:' || ':x:' }} *テスト結果：${{ job.status == 'success' && '成功' || '失敗' }}*
           
           *リポジトリ:* ${{ github.repository }}
           *ブランチ:* ${{ github.ref_name }}
           *実行者:* ${{ github.actor }}
-        SLACK_FOOTER: ''
+          
+          <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Actions URL>
+        SLACK_FOOTER: ""
+        MSG_MINIMAL: true  # 余分な情報を削除
