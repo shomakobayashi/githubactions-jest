@@ -37,12 +37,14 @@ jobs:
         SLACK_USERNAME: GitHub Actions Notifier
         SLACK_TITLE: ""
         SLACK_MESSAGE: |
-          ${{ job.status == 'success' && ':white_check_mark:' || ':x:' }} *テスト結果：${{ job.status == 'success' && '成功' || '失敗' }}*
+          ${{ job.status == 'success' && ':white_check_mark:' || ':x:' }} テスト結果 : ${{ job.status == 'success' && '成功' || '失敗' }}
           
-          *リポジトリ:* ${{ github.repository }}
-          *ブランチ:* ${{ github.ref_name }}
+          ---
+          
+          *リポジトリ:* ${{ github.repository }}          *ブランチ:* ${{ github.ref_name }}
+          
           *実行者:* ${{ github.actor }}
           
           <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Actions URL>
         SLACK_FOOTER: ""
-        MSG_MINIMAL: true  # 余分な情報を削除
+        MSG_MINIMAL: true
