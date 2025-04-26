@@ -38,21 +38,38 @@ jobs:
             "text": "テスト ${{ job.status == 'success' && '成功' || '失敗' }}",
             "blocks": [
               {
-                "type": "header",
+                "type": "section",
                 "text": {
-                  "type": "plain_text",
-                  "text": "${{ job.status == 'success' && '✅' || '❌' }} テスト結果 | ${{ github.repository }} | ブランチ: ${{ github.ref_name }}"
+                  "type": "mrkdwn",
+                  "text": "${{ job.status == 'success' && '✅' || '❌' }} テスト結果：${{ job.status == 'success' && '成功' || '失敗' }}"
                 }
               },
               {
                 "type": "divider"
               },
               {
-                "type": "context",
-                "elements": [
+                "type": "section",
+                "fields": [
                   {
                     "type": "mrkdwn",
-                    "text": "実行者: ${{ github.actor }} | 実行日時: ${{ github.event.repository.updated_at }}"
+                    "text": "*リポジトリ:*\n${{ github.repository }}"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*ブランチ:*\n${{ github.ref_name }}"
+                  }
+                ]
+              },
+              {
+                "type": "section",
+                "fields": [
+                  {
+                    "type": "mrkdwn",
+                    "text": "*実行者:*\n${{ github.actor }}"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*ステータス:*\n${{ job.status }}"
                   }
                 ]
               },
@@ -63,23 +80,9 @@ jobs:
                     "type": "button",
                     "text": {
                       "type": "plain_text",
-                      "text": "詳細を見る"
+                      "text": "ワークフロー詳細を見る"
                     },
                     "url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-                  }
-                ]
-              }
-            ],
-            "attachments": [
-              {
-                "color": "${{ job.status == 'success' && '#36a64f' || '#ff0000' }}",
-                "blocks": [
-                  {
-                    "type": "section",
-                    "text": {
-                      "type": "mrkdwn",
-                      "text": " "
-                    }
                   }
                 ]
               }
