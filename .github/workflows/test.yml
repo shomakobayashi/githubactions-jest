@@ -25,7 +25,12 @@ jobs:
       run: npm run build
       
     - name: Run tests
-      run: npm test
+      id: tests
+      run: |
+        start_time=$(date +%s)
+        npm test
+        end_time=$(date +%s)
+        echo "duration=$((end_time - start_time))" >> $GITHUB_OUTPUT
       
     - name: Notify Slack
       if: always()
@@ -52,7 +57,7 @@ jobs:
                 - type: "mrkdwn"
                   text: "*実行者:*\n${{ github.actor }}"
                 - type: "mrkdwn"
-                  text: "*ステータス:*\n${{ job.status }}"
+                  text: "*実行時間:*\n${{ steps.tests.outputs.duration }}秒"
             - type: "actions"
               elements:
                 - type: "button"
