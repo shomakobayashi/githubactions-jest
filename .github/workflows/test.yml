@@ -1,12 +1,7 @@
 name: Run Tests and Notify Slack
 
 on:
-  pull_request:
-    types: [opened, ready_for_review]
-  push:
-    branches:
-      - main
-  workflow_dispatch:  # 手動トリガー
+  workflow_dispatch:  # 手動トリガーのみ
 
 jobs:
   test:
@@ -38,7 +33,12 @@ jobs:
       with:
         payload: |
           {
-            "text": "テスト${{ job.status == 'success' && '成功' || '失敗' }}: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            "text": "*テスト ${{ job.status == 'success' && '成功' || '失敗' }}*\n
+            リポジトリ: ${{ github.repository }}\n
+            ブランチ: ${{ github.ref_name }}\n
+            実行者: ${{ github.actor }}\n
+            <https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|ワークフロー詳細を見る>",
+            "color": "${{ job.status == 'success' && 'good' || 'danger' }}"
           }
       env:
         SLACK_WEBHOOK_URL: ${{ vars.SLACK_WEBHOOK_URL }}  # GitHub Environmentsの変数を使用
