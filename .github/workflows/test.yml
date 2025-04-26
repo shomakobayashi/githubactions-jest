@@ -27,15 +27,13 @@ jobs:
     - name: Run tests
       run: npm test
       
-    - name: Notify Slack
-      if: always()
-      uses: slackapi/slack-github-action@v2.0.0
+    - name: Slack Notification
+      uses: 8398a7/action-slack@v3
       with:
-        webhook: ${{ vars.SLACK_WEBHOOK_URL }}
-        webhook-type: incoming-webhook
-        payload: |
+        status: ${{ job.status }}
+        fields: repo,commit,message,author
+        custom_payload: |
           {
-            "text": "Test ${{ job.status == 'success' && 'Success' || 'Failed' }}",
             "attachments": [
               {
                 "color": "${{ job.status == 'success' && 'good' || 'danger' }}",
@@ -71,21 +69,20 @@ jobs:
                         "text": "*実行者:*\n${{ github.actor }}"
                       }
                     ]
-                  },
+                  }
+                ],
+                "actions": [
                   {
-                    "type": "actions",
-                    "elements": [
-                      {
-                        "type": "button",
-                        "text": {
-                          "type": "plain_text",
-                          "text": "ワークフロー詳細"
-                        },
-                        "url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-                      }
-                    ]
+                    "type": "button",
+                    "text": {
+                      "type": "plain_text",
+                      "text": "ワークフロー詳細"
+                    },
+                    "url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
                   }
                 ]
               }
             ]
           }
+      env:
+        SLACK_WEBHOOK_URL: ${{ vars.SLACK_WEBHOOK_URL }}
