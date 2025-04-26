@@ -29,11 +29,8 @@ jobs:
       
     - name: Notify Slack
       if: always()
-      uses: slackapi/slack-github-action@v2.0.0
+      uses: slackapi/slack-github-action@v1.24.0
       with:
-        # v2.0.0では webhook-url パラメータを使用
-        webhook-url: ${{ vars.SLACK_WEBHOOK_URL }}
-        # シンプルなペイロード形式を使用
         payload: |
           {
             "text": "テスト ${{ job.status == 'success' && '成功' || '失敗' }}",
@@ -65,3 +62,5 @@ jobs:
               }
             ]
           }
+      env:
+        SLACK_WEBHOOK_URL: ${{ vars.SLACK_WEBHOOK_URL }}
