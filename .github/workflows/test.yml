@@ -35,7 +35,6 @@ jobs:
         webhook-type: incoming-webhook
         payload: |
           {
-            "text": "Test ${{ job.status == 'success' && 'Success' || 'Failed' }}",
             "attachments": [
               {
                 "color": "${{ job.status == 'success' && 'good' || 'danger' }}",
@@ -44,7 +43,7 @@ jobs:
                     "type": "section",
                     "text": {
                       "type": "mrkdwn",
-                      "text": "${{ job.status == 'success' && ':white_check_mark:' || ':x:' }} Test Result：${{ job.status == 'success' && 'Success' || 'Failure' }}"
+                      "text": "${{ job.status == 'success' && ':white_check_mark:' || ':x:' }} *Test Result : ${{ job.status == 'success' && 'Success' || 'Failure' }}*"
                     }
                   },
                   {
@@ -87,5 +86,6 @@ jobs:
                   }
                 ]
               }
-            ]
+            ],
+            "text": "Test ${{ job.status == 'success' && 'Success' || 'Failed' }}"
           }
