@@ -1,4 +1,4 @@
-name: Run Tests and Notify Slack
+name: Jest Tests and Notify Slack
 
 on:
   workflow_dispatch:  # 手動トリガーのみ
