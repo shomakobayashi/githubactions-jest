@@ -1,4 +1,4 @@
-name: Jest Tests and Notify Slack
+name: Run Tests and Notify Slack
 
 on:
   workflow_dispatch:  # 手動トリガーのみ
@@ -38,35 +38,21 @@ jobs:
             "text": "テスト ${{ job.status == 'success' && '成功' || '失敗' }}",
             "blocks": [
               {
-                "type": "section",
+                "type": "header",
                 "text": {
-                  "type": "mrkdwn",
-                  "text": "*テスト ${{ job.status == 'success' && '成功 :white_check_mark:' || '失敗 :x:' }}*"
+                  "type": "plain_text",
+                  "text": "${{ job.status == 'success' && '✅' || '❌' }} テスト結果 | ${{ github.repository }} | ブランチ: ${{ github.ref_name }}"
                 }
               },
               {
-                "type": "section",
-                "fields": [
-                  {
-                    "type": "mrkdwn",
-                    "text": "*リポジトリ:*\n${{ github.repository }}"
-                  },
-                  {
-                    "type": "mrkdwn",
-                    "text": "*ブランチ:*\n${{ github.ref_name }}"
-                  }
-                ]
+                "type": "divider"
               },
               {
-                "type": "section",
-                "fields": [
+                "type": "context",
+                "elements": [
                   {
                     "type": "mrkdwn",
-                    "text": "*実行者:*\n${{ github.actor }}"
-                  },
-                  {
-                    "type": "mrkdwn",
-                    "text": "*ステータス:*\n${{ job.status }}"
+                    "text": "実行者: ${{ github.actor }} | 実行日時: ${{ github.event.repository.updated_at }}"
                   }
                 ]
               },
@@ -77,9 +63,23 @@ jobs:
                     "type": "button",
                     "text": {
                       "type": "plain_text",
-                      "text": "ワークフロー詳細を見る"
+                      "text": "詳細を見る"
                     },
                     "url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                  }
+                ]
+              }
+            ],
+            "attachments": [
+              {
+                "color": "${{ job.status == 'success' && '#36a64f' || '#ff0000' }}",
+                "blocks": [
+                  {
+                    "type": "section",
+                    "text": {
+                      "type": "mrkdwn",
+                      "text": " "
+                    }
                   }
                 ]
               }
