@@ -33,12 +33,53 @@ jobs:
       with:
         payload: |
           {
-            "text": "テスト ${{ job.status == 'success' && '成功' || '失敗' }}",
-            "attachments": [
-                {
-                  "color": "${{ job.status == 'success' && 'good' || 'danger' }}",
-                  "text": "リポジトリ: ${{ github.repository }}\nブランチ: ${{ github.ref_name }}\n実行者: ${{ github.actor }}\n<https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|ワークフロー詳細を見る>"
+            "blocks": [
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "*テスト ${{ job.status == 'success' && '成功 :white_check_mark:' || '失敗 :x:' }}*"
                 }
+              },
+              {
+                "type": "section",
+                "fields": [
+                  {
+                    "type": "mrkdwn",
+                    "text": "*リポジトリ:*\n${{ github.repository }}"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*ブランチ:*\n${{ github.ref_name }}"
+                  }
+                ]
+              },
+              {
+                "type": "section",
+                "fields": [
+                  {
+                    "type": "mrkdwn",
+                    "text": "*実行者:*\n${{ github.actor }}"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*ステータス:*\n${{ job.status }}"
+                  }
+                ]
+              },
+              {
+                "type": "actions",
+                "elements": [
+                  {
+                    "type": "button",
+                    "text": {
+                      "type": "plain_text",
+                      "text": "ワークフロー詳細を見る"
+                    },
+                    "url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                  }
+                ]
+              }
             ]
           }
       env:
