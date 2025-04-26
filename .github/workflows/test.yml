@@ -29,10 +29,12 @@ jobs:
       
     - name: Notify Slack
       if: always()
-      uses: slackapi/slack-github-action@v1.24.0
+      uses: slackapi/slack-github-action@v2.0.0
       with:
+        webhook-url: ${{ vars.SLACK_WEBHOOK_URL }}
         payload: |
           {
+            "text": "テスト ${{ job.status == 'success' && '成功' || '失敗' }}",
             "blocks": [
               {
                 "type": "section",
@@ -82,5 +84,3 @@ jobs:
               }
             ]
           }
-      env:
-        SLACK_WEBHOOK_URL: ${{ vars.SLACK_WEBHOOK_URL }}
