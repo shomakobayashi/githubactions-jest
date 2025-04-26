@@ -27,24 +27,65 @@ jobs:
     - name: Run tests
       run: npm test
       
-    - name: Slack Notification
+    - name: Notify Slack
       if: always()
-      uses: rtCamp/action-slack-notify@v2.0.2
-      env:
-        SLACK_WEBHOOK: ${{ vars.SLACK_WEBHOOK_URL }}
-        SLACK_COLOR: ${{ job.status == 'success' && 'good' || 'danger' }}
-        SLACK_ICON: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
-        SLACK_USERNAME: GitHub Actions Notifier
-        SLACK_TITLE: ""
-        SLACK_MESSAGE: |
-          ${{ job.status == 'success' && ':white_check_mark:' || ':x:' }} テスト結果 : ${{ job.status == 'success' && '成功' || '失敗' }}
-          
-          ---
-          
-          *リポジトリ:* ${{ github.repository }}          *ブランチ:* ${{ github.ref_name }}
-          
-          *実行者:* ${{ github.actor }}
-          
-          <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Actions URL>
-        SLACK_FOOTER: ""
-        MSG_MINIMAL: true
+      uses: slackapi/slack-github-action@v2.0.0
+      with:
+        webhook: ${{ vars.SLACK_WEBHOOK_URL }}
+        webhook-type: incoming-webhook
+        payload: |
+          {
+            "text": "Test ${{ job.status == 'success' && 'Success' || 'Failed' }}",
+            "attachments": [
+              {
+                "color": "${{ job.status == 'success' && 'good' || 'danger' }}",
+                "blocks": [
+                  {
+                    "type": "section",
+                    "text": {
+                      "type": "mrkdwn",
+                      "text": "${{ job.status == 'success' && ':white_check_mark:' || ':x:' }} テスト結果：${{ job.status == 'success' && '成功' || '失敗' }}"
+                    }
+                  },
+                  {
+                    "type": "divider"
+                  },
+                  {
+                    "type": "section",
+                    "fields": [
+                      {
+                        "type": "mrkdwn",
+                        "text": "*リポジトリ:*\n${{ github.repository }}"
+                      },
+                      {
+                        "type": "mrkdwn",
+                        "text": "*ブランチ:*\n${{ github.ref_name }}"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "fields": [
+                      {
+                        "type": "mrkdwn",
+                        "text": "*実行者:*\n${{ github.actor }}"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "actions",
+                    "elements": [
+                      {
+                        "type": "button",
+                        "text": {
+                          "type": "plain_text",
+                          "text": "ワークフロー詳細"
+                        },
+                        "url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
