@@ -24,4 +24,9 @@ describe('Calculator', () => {
   test('0で割ろうとするとエラーになる', () => {
     expect(() => divide(10, 0)).toThrow('Division by zero is not allowed');
   });
+
+  // わざと失敗するテスト
+  test('このテストは失敗します', () => {
+    expect(add(1, 1)).toBe(3); // 1 + 1 = 2 なので、3を期待すると失敗する
+  });
 });
