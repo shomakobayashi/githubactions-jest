@@ -34,21 +34,27 @@ jobs:
         webhook: ${{ vars.SLACK_WEBHOOK_URL }}
         webhook-type: incoming-webhook
         payload: |
-          text: "テスト ${{ job.status == 'success' && '成功' || '失敗' }}"
+          text: "Test ${{ job.status == 'success' && 'Success' || 'Failed' }}"
           blocks:
             - type: "section"
               text:
                 type: "mrkdwn"
-                text: "*${{ job.status == 'success' && ':white_check_mark:' || ':x:' }} テスト結果：${{ job.status == 'success' && '成功' || '失敗' }}*"
+                text: "${{ job.status == 'success' && ':white_check_mark:' || ':x:' }} Test Result：${{ job.status == 'success' && 'Success' || 'Failure' }}"
             - type: "divider"
             - type: "section"
               fields:
                 - type: "mrkdwn"
-                  text: "*リポジトリ:*\n${{ github.repository }}"   *ブランチ:*\n${{ github.ref_name }}   *実行者:*\n${{ github.actor }}"
+                  text: "*Repositories:*\n${{ github.repository }}"
+                - type: "mrkdwn"
+                  text: "*Branch:*\n${{ github.ref_name }}"
+            - type: "section"
+              fields:
+                - type: "mrkdwn"
+                  text: "*executer:*\n${{ github.actor }}"
             - type: "actions"
               elements:
                 - type: "button"
                   text:
                     type: "plain_text"
-                    text: "ワークフロー詳細"
+                    text: "Actions URL"
                   url: "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
