@@ -40,9 +40,7 @@ jobs:
               text:
                 type: "mrkdwn"
                 text: "*${{ job.status == 'success' && ':white_check_mark:' || ':x:' }} テスト結果：${{ job.status == 'success' && '成功' || '失敗' }}*"
-            - type: "section"
-              text:
-                type: "divider"
+            - type: "divider"
             - type: "section"
               fields:
                 - type: "mrkdwn"
