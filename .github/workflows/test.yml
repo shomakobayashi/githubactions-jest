@@ -34,27 +34,58 @@ jobs:
         webhook: ${{ vars.SLACK_WEBHOOK_URL }}
         webhook-type: incoming-webhook
         payload: |
-          text: "Test ${{ job.status == 'success' && 'Success' || 'Failed' }}"
-          blocks:
-            - type: "section"
-              text:
-                type: "mrkdwn"
-                text: "${{ job.status == 'success' && ':white_check_mark:' || ':x:' }} Test Result：${{ job.status == 'success' && 'Success' || 'Failure' }}"
-            - type: "divider"
-            - type: "section"
-              fields:
-                - type: "mrkdwn"
-                  text: "*Repositories:*\n${{ github.repository }}"
-                - type: "mrkdwn"
-                  text: "*Branch:*\n${{ github.ref_name }}"
-            - type: "section"
-              fields:
-                - type: "mrkdwn"
-                  text: "*executer:*\n${{ github.actor }}"
-            - type: "actions"
-              elements:
-                - type: "button"
-                  text:
-                    type: "plain_text"
-                    text: "Actions URL"
-                  url: "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          {
+            "text": "Test ${{ job.status == 'success' && 'Success' || 'Failed' }}",
+            "attachments": [
+              {
+                "color": "${{ job.status == 'success' && 'good' || 'danger' }}",
+                "blocks": [
+                  {
+                    "type": "section",
+                    "text": {
+                      "type": "mrkdwn",
+                      "text": "${{ job.status == 'success' && ':white_check_mark:' || ':x:' }} Test Result：${{ job.status == 'success' && 'Success' || 'Failure' }}"
+                    }
+                  },
+                  {
+                    "type": "divider"
+                  },
+                  {
+                    "type": "section",
+                    "fields": [
+                      {
+                        "type": "mrkdwn",
+                        "text": "*Repositories:*\n${{ github.repository }}"
+                      },
+                      {
+                        "type": "mrkdwn",
+                        "text": "*Branch:*\n${{ github.ref_name }}"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "section",
+                    "fields": [
+                      {
+                        "type": "mrkdwn",
+                        "text": "*Executer:*\n${{ github.actor }}"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "actions",
+                    "elements": [
+                      {
+                        "type": "button",
+                        "text": {
+                          "type": "plain_text",
+                          "text": "Actions URL"
+                        },
+                        "url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
