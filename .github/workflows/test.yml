@@ -40,6 +40,6 @@ jobs:
           *ブランチ:* ${{ github.ref_name }}
           *実行者:* ${{ github.actor }}
 
-          <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Actions URL>
+          <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|ワークフロー詳細>
         SLACK_FOOTER: ""
         MSG_MINIMAL: "true"  # RefとEventを非表示にする
