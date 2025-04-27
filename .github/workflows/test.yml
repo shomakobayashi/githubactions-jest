@@ -1,3 +1,4 @@
+ブロック版
 name: Jest Tests and Notify Slack
 
 on:
@@ -27,19 +28,38 @@ jobs:
     - name: Run tests
       run: npm test
       
-    - name: Slack Notification
-      uses: rtCamp/action-slack-notify@v2.2.0
-      env:
-        SLACK_WEBHOOK: ${{ vars.SLACK_WEBHOOK_URL }}
-        SLACK_COLOR: ${{ job.status == 'success' && 'good' || 'danger' }}
-        SLACK_ICON: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
-        SLACK_USERNAME: GitHub Actions Notifier
-        SLACK_TITLE: "${{ job.status == 'success' && ':white_check_mark:' || ':x:' }} テスト結果：${{ job.status == 'success' && '成功' || '失敗' }}"
-        SLACK_MESSAGE: |
-          *リポジトリ:* ${{ github.repository }}
-          *ブランチ:* ${{ github.ref_name }}
-          *実行者:* ${{ github.actor }}
+    - name: Notify Slack
+      if: always()
+      uses: slackapi/slack-github-action@v2.0.0
+      with:
+        webhook: ${{ vars.SLACK_WEBHOOK_URL }}
+        webhook-type: incoming-webhook
+        payload: |
+          text: "Test ${{ job.status == 'success' && 'Success' || 'Failed' }}"
+          blocks:
+            - type: "section"
+              text:
+                type: "mrkdwn"
+                text: "${{ job.status == 'success' && ':white_check_mark:' || ':x:' }} Test Result：${{ job.status == 'success' && 'Success' || 'Failure' }}"
+            - type: "divider"
+            - type: "section"
+              fields:
+                - type: "mrkdwn"
+                  text: "*リポジトリ:*\n${{ github.repository }}"
+            - type: "section"
+              fields:
+                - type: "mrkdwn"
+                  text: "*ブランチ:*\n${{ github.ref_name }}"
+            - type: "section"
+              fields:
+                - type: "mrkdwn"
+                  text: "*実行者:*\n${{ github.actor }}"
+            - type: "actions"
+              elements:
+                - type: "button"
+                  text:
+                    type: "plain_text"
+                    text: "ワークフロー詳細"
+                  url: "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
 
-          <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|ワークフロー詳細>
-        SLACK_FOOTER: ""
-        MSG_MINIMAL: "true"  # RefとEventを非表示にする
+
