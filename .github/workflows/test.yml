@@ -29,6 +29,7 @@ jobs:
       
     - name: Slack Notification
       uses: rtCamp/action-slack-notify@v2.2.0
+      if: always()
       env:
         SLACK_WEBHOOK: ${{ vars.SLACK_WEBHOOK_URL }}
         SLACK_COLOR: ${{ job.status == 'success' && 'good' || 'danger' }}
