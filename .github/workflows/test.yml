@@ -44,4 +44,4 @@ jobs:
 
           <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|ワークフロー詳細>  # ワークフロー実行へのリンク
         SLACK_FOOTER: ""  # フッターは空に設定
-        MSG_MINIMAL: "true"  # リファレンスとイベント情報を非表示に設定
+        MSG_MINIMAL: "false"  # リファレンスとイベント情報を非表示に設定
