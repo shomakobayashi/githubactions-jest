@@ -44,4 +44,8 @@ jobs:
           <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|ワークフロー詳細> 
         SLACK_FOOTER: ""  # フッターは空に設定
         MSG_MINIMAL: "false"  # リファレンスとイベント情報を非表示に設定
-        SLACK_ICON: ":robot_face:"  # 通知アイコンをロボット顔に設定
+        MSG_ICONS: "true"  # アイコンを非表示に設定
+        MSG_PREVIEW: "false"  # プレビューを非表示に設定
+        MSG_ATTACHMENTS: "true"  # 添付ファイルを表示
+        MSG_FOOTER: "GitHub Actions"  # フッターに表示するテキスト
+        MSG_FOOTER_ICON: "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"  # フッターアイコンのURL
