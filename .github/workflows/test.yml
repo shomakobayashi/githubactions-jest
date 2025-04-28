@@ -29,7 +29,7 @@ jobs:
       run: npm test
       
     - name: Slack Notification  # テスト結果をSlackに通知
-      uses: rtCamp/action-slack-notify@v2 # Slack通知用のアクション
+      uses: rtCamp/action-slack-notify@v2.2.0  # Slack通知用のアクション
       if: always()  # テストの成功/失敗に関わらず常に通知を送信
       env:
         SLACK_WEBHOOK: ${{ vars.SLACK_WEBHOOK_URL }}  # SlackのWebhook URL（環境変数から取得）
@@ -44,14 +44,3 @@ jobs:
           <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|ワークフロー詳細> 
         SLACK_FOOTER: ""  # フッターは空に設定
         MSG_MINIMAL: "false"  # リファレンスとイベント情報を非表示に設定
-    
-    - name: Slack Notification
-      uses: rtCamp/action-slack-notify@v2
-      env:
-        SLACK_CHANNEL: general
-        SLACK_COLOR: ${{ job.status }} # or a specific color like 'good' or '#ff00ff'
-        SLACK_ICON: https://github.com/rtCamp.png?size=48
-        SLACK_MESSAGE: 'Post Content :rocket:'
-        SLACK_TITLE: Post Title
-        SLACK_USERNAME: rtCamp
-        SLACK_WEBHOOK: ${{ vars.SLACK_WEBHOOK_URL }}
