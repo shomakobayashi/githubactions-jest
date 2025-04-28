@@ -34,10 +34,10 @@ jobs:
       env:
         SLACK_WEBHOOK: ${{ vars.SLACK_WEBHOOK_URL }}  # SlackのWebhook URL（環境変数から取得）
         SLACK_COLOR: ${{ job.status == 'success' && 'good' || 'danger' }}  # 成功時は緑、失敗時は赤
-        SLACK_ICON: https://avatars.githubusercontent.com/u/44036562?s=200&v=4  # 通知アイコン
+        SLACK_ICON: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png  # 通知アイコン
         SLACK_USERNAME: GitHub Actions Notifier  # 通知の送信者名
         SLACK_TITLE: "${{ job.status == 'success' && ':white_check_mark:' || ':x:' }} テスト結果：${{ job.status == 'success' && '成功' || '失敗' }}"  # 通知タイトル
-        SLACK_MESSAGE: |  # 通知本文（複数行）
+        SLACK_MESSAGE: |  # 通知本文
           *リポジトリ:* ${{ github.repository }}  # リポジトリ名を表示
           *ブランチ:* ${{ github.ref_name }}  # ブランチ名を表示
           *実行者:* ${{ github.actor }}  # ワークフロー実行者を表示
